@@ -5,7 +5,7 @@
 
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, useAnimation, AnimatePresence } from 'motion/react';
-import { Trophy, Gift, Smartphone, PenTool, Sparkles, Volume2, VolumeX } from 'lucide-react';
+import { Trophy, Gift, Smartphone, PenTool, Sparkles, Volume2, VolumeX, Lock } from 'lucide-react';
 
 // --- Types ---
 interface Prize {
@@ -181,6 +181,9 @@ export default function App() {
   const spin = async () => {
     if (isSpinning || hasSpun) return;
 
+    // 后台立即锁定，确保刷新页面也无法重抽
+    localStorage.setItem('lucky_spin_has_played', 'true');
+    
     setIsSpinning(true);
     setResult(null);
 
@@ -397,8 +400,19 @@ export default function App() {
                 </p>
               </div>
 
-              <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest italic">Rewards locked to your session</p>
+              <div className="space-y-4">
+                <div className="bg-red-600/20 border-2 border-red-500 p-4 rounded-2xl animate-pulse shadow-[0_0_20px_rgba(239,68,68,0.4)]">
+                  <p className="text-red-500 text-xl font-black italic uppercase tracking-tighter">
+                    ⚠️ 必须要马上截图！
+                  </p>
+                  <p className="text-red-400 text-[10px] font-bold mt-1 uppercase tracking-[0.1em]">
+                    此截图为唯一领奖凭证，失效不补
+                  </p>
+                </div>
+
+                <div className="bg-white/5 p-3 rounded-xl border border-white/5">
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest italic">Rewards locked to your session</p>
+                </div>
               </div>
 
               <button 
